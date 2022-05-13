@@ -49,6 +49,7 @@ flip-card-{
 	--flip-card-background-top: white;
 	--flip-card-background-bottom: white;
 	--flip-card-background-full: white;
+	--flip-card-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .2);
 	/* the `color`, `font`, `width`, `height` cascade down to the `flip-card-` like so */
 	color: black;
 	font: bold 7em sans-serif;
