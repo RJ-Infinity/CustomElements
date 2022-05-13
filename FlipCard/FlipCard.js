@@ -41,6 +41,9 @@ HTMLFlipCardElementTemplate.innerHTML = `
 	left: 0px;
 	border: var(--border-width) solid grey;
 }
+.flip-card>*>*{
+	white-space: nowrap;
+}
 .flip-card>.top{
 	border-radius: var(--border-radius) var(--border-radius) 0 0;
 	border-bottom: var(--border-width) solid lightgrey;
@@ -149,8 +152,7 @@ class HTMLFlipCardElementElement extends HTMLElement {
 	flip(){
 		this.normalize();
 		var element = this.#shadowRoot.getElementById("flipCard");
-		var next = element.querySelectorAll("[digit=\"next\"]")
-		next.forEach(el=>{
+		element.querySelectorAll("[digit=\"next\"]").forEach(el=>{
 			el.textContent = this.textContent;
 		})
 		element.classList.add("flip");
