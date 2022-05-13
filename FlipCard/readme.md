@@ -54,6 +54,6 @@ flip-card-{
 	font: bold 7em sans-serif;
 	width: 1em;
 	height: 1.142857em;
-	/* the height looks a bit stupid if it is more than `2em` as the character is just on the top row
+	/* the height looks a bit stupid if it is more than `2em` as the character is just on the top row*/
 }
 ```
