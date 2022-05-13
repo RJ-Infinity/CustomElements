@@ -163,5 +163,13 @@ class HTMLFlipCardElementElement extends HTMLElement {
 			}
 		});
 	}
+	changeNoFlip(changeTo){
+		this.#shadowRoot.getElementById("flipCard")
+		.querySelectorAll("[digit=\"next\"],[digit=\"current\"]")
+		.forEach(el=>{
+			el.textContent = changeTo;
+		})
+		this.textContent = changeTo;
+	}
 }
 customElements.define('flip-card-', HTMLFlipCardElementElement);
