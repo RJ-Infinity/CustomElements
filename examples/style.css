@@ -1,0 +1,22 @@
+html{
+	height: 100%;
+}
+body{
+	display: flex; /*for sticky footer */
+	flex-direction: column;
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+footer{
+	margin-top: auto;
+	background-color: rgb(45,45,45);
+	color: white;
+	padding: 1em;
+}
+footer a:visited{
+	color:#8608fb;
+}
+footer p{
+	margin: 0;
+}

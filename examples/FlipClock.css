@@ -1,0 +1,32 @@
+:root{
+	font-family: sans-serif;
+}
+.clock{
+	font-weight: bold;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	background-color: rgb(242, 241, 237);
+	width: max-content;
+	font-size: min(7rem, 13vw);
+}
+.center{
+	left:50%;
+	transform: translateX(-50%);
+}
+.flip-container::before{
+	content: attr(heading);
+	position: absolute;
+	text-align: center;
+	transform: translateY(-100%);
+	width: 100%;
+	font-size: 0.2em;
+}
+.flip-container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0.1em;
+	position: relative;
+	padding-top: 0.2em;
+}
