@@ -14,7 +14,6 @@ HTMLFlipCardElementTemplate.innerHTML = `
 		<span digit="next"></span>
 	</span>
 </div>
-<!--slot id="slot" style="display:none;"></slot-->
 <style>
 :host{
 	--animation-time: var(--flip-card-animation-time, 0.5s);
@@ -125,7 +124,6 @@ HTMLFlipCardElementTemplate.innerHTML = `
 
 class HTMLFlipCardElementElement extends HTMLElement {
 	#shadowRoot;
-	// #oldTextContent;
 	constructor() {
 		super();
 		this.#shadowRoot = this.attachShadow({mode: 'closed'});
