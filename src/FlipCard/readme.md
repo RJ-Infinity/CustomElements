@@ -2,11 +2,11 @@
 
 this is a libary that adds a flip card they look a little like this
 
-![FlipCard Image](https://github.com/RJ-Infinity/CustomElements/blob/main/FlipCard/FlipCardImage.png?raw=true)
+![FlipCard Image](https://github.com/RJ-Infinity/CustomElements/blob/main/src/FlipCard/FlipCardImage.png?raw=true)
 
 here it is flipping
 
-![FlipCard Gif](https://github.com/RJ-Infinity/CustomElements/blob/main/FlipCard/FlipCardClock.gif?raw=true)
+![FlipCard Gif](https://github.com/RJ-Infinity/CustomElements/blob/main/src/FlipCard/FlipCardClock.gif?raw=true)
 
 you put it into your html like this
 ```html
