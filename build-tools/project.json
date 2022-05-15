@@ -1,0 +1,23 @@
+{
+	"enviroment":{
+		"dir":{
+			"type":"JOIN",
+			"from":[
+				{
+					"type":"VAR",
+					"from":"CURDIR"
+				},
+				{
+					"type":"TEXT",
+					"from":"/.."
+				}
+			]
+		}
+	},
+	"instructions":[
+		{
+			"type":"BUILD",
+			"from":"src/FlipCard/build.json"
+		}
+	]
+}

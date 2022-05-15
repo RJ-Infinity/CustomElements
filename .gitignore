@@ -1,2 +1,4 @@
 server.cmd
 .vscode
+*.min.*
+min
