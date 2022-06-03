@@ -43,42 +43,62 @@ Vars:dict[str,Callable] = {
 	"THISDIR":lambda:DataStack[len(DataStack)-1]["FileLoc"]
 }
 
-def parseVar(From):
+def parseVar(From,_):
 	From = parseTextOrStr(From,"from","VAR")
 	assert From in Vars, f"VAR {From} not found"
 	return Vars[From]()
-def parseText(From):
+def parseText(From,_):
 	assert type(From) == str, "TEXT Module from must be a String"
 	return From
-def parseJoin(From):
-	assert type(From) == list, "JOIN Module from must be a List"
+def parseJoin(From,Out):
+	Out = "" if Out == None else Out
+	if type(From) == dict:
+		From = parseObj(From)
+		assert type(From) == list, f"An Object in the from JOIN module list must be a ListModule whereas {From} isnt"
+	assert type(From) == list, f"JOIN Module from must be a list or ListModule whereas {From} isnt"
 	returnv = ""
 	for item in From:
 		assert type(item) == dict, "The Elements in the JOIN module list must be Objects"
 		parsed = parseObj(item)
 		assert type(parsed) == str, "The Elements in the JOIN module list must be TextModules"
 		returnv += parsed
+	returnv = returnv[:len(returnv)-len(Out)]
 	return returnv
-def parseFile(From):
+def parseFile(From,_):
 	From = parseTextOrStr(From,"from","FILE")
-	assert type(From) == str, "FILE Module from must be a string or TextModule"
 	try:
 		with open(os.path.normpath(From),"r") as file:
 			return file.read()
 	except FileNotFoundError:
 		assert False, f"error the path'{From}' is not a valid file when trying to navigate there from {os.getcwd()}"
+def parseSplit(From,Out):
+	From = parseTextOrStr(From,"from","SPLIT")
+	Out = parseTextOrStr(Out,"out","SPLIT")
+	if Out == "":
+		lst = list(From)
+	else:
+		lst = From.split(Out)
+	returnv = []
+	for el in lst:
+		obj = {}
+		obj["type"] = "TEXT"
+		obj["from"] = el
+		returnv.append(obj)
+	return returnv
 
 TextModules = {
 	"VAR":parseVar,
 	"TEXT":parseText,
 	"JOIN":parseJoin,
 	"FILE":parseFile,
+	"SPLIT":parseSplit,
 }
 
-def parseBuild(From,_):
+def parseBuild(From,Out):
 	From = parseTextOrStr(From,"from","BUILD")
+	Out = parseTextOrStr(Out,"out","BUILD")
 	cwd = os.getcwd()
-	main(["this is the file location",os.path.normpath(From)],True)
+	main(["this is the file location",os.path.normpath(From),Out],True)
 	os.chdir(cwd)
 def parseOutput(From,_):
 	From = parseTextOrStr(From,"from","OUTPUT")
@@ -135,7 +155,7 @@ def parseObj(obj):
 	assert "type" in obj, "Error 'type' must be present in a parsable object"
 	assert "from" in obj, "Error 'from' must be present in a parsable object"
 	if obj["type"] in TextModules:
-		return TextModules[obj["type"]](obj["from"])
+		return TextModules[obj["type"]](obj["from"],obj["out"] if "out" in obj else None)
 	if obj["type"] in doModules:
 		return Do(
 			obj["type"],
@@ -165,7 +185,7 @@ envModules:dict[str,Callable] = {
 }
 
 def setUpEnv(build:JsonDict):
-	if not "enviroment" in build: 
+	if not "enviroment" in build:
 		return # no enviroment settings no need to tell
 	env = build["enviroment"]
 	assert type(env) == dict, f"enviroment is a '{pythonToJsonTypes[type(env)]}' not a Object"
@@ -173,24 +193,26 @@ def setUpEnv(build:JsonDict):
 		if key in envModules:
 			envModules[key](env[key])
 
+def runInstructions(build:JsonDict,Command:str):
 def runInstructions(build:JsonDict):
 	if (not "instructions" in build) or build["instructions"]==[]:
 		print("Warning: Nothing for the build to do")# not an error just stupid
 		return
-	ins = build["instructions"]
-	assert type(ins) == list, "Error The instructions must be a list of objects"
+	ins = build["commands"][Command]
+	assert type(ins) == list, f"Error The instructions must be a list of objects wheras {ins} isnt"
 	for obj in ins:
-		assert type(obj) == dict, "Error The instructions must be a list of objects"
+		assert type(obj) == dict, f"Error The instructions must be a list of objects wheras {obj} isnt an obj"
 		inst = parseObj(obj)
-		assert type(inst) == Do, "Error The instructions cannot be TextModules"
+		assert type(inst) == Do, f"Error The instructions cannot be TextModules wheras {obj} is"
 		inst.run()
 
 
 def main(args:list[str],ignoreFlags = False):
 	assert type(args) == list, f"Error {type(args)} not a list[str]"
-	assert len(args) == 2,"Error incorect number of args"
+	assert len(args) > 2,"Error incorect number of args"
 	if not ignoreFlags:
 		assert not (args[1].startswith("/") or args[1].startswith("-")), "flags NOT IMPLEMENTED YET"
+		assert not (args[2].startswith("/") or args[2].startswith("-")), "flags NOT IMPLEMENTED YET"
 	try:
 		with open(args[1],"r") as buildF:
 			build = json.load(buildF)
@@ -201,10 +223,10 @@ def main(args:list[str],ignoreFlags = False):
 	os.chdir(args[1]+"\\..")
 	assert type(build) == dict, "The root Element must be an Object"
 
-	DataStack.append({"FileLoc":args[1]})
+	DataStack.append({"FileLoc":args[1],"Command":args[2],"Args":" ".join(args[3:])})
 
 	setUpEnv(build)
-	runInstructions(build)
+	runInstructions(build,args[2])
 
 	DataStack.pop()
 
