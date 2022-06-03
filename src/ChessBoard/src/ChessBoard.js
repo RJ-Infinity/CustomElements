@@ -105,9 +105,6 @@ class HTMLChessBoardElementElement extends HTMLElement {
 			throw `Error ${value} not a highlight state`
 		}
 		var sqrDiv = this.#getSqr(position);
-		if (sqrDiv == undefined){
-			throw "Error Invalid Position";
-		}
 		if (remove){
 			sqrDiv.classList.remove(value)
 		}else{
@@ -117,26 +114,33 @@ class HTMLChessBoardElementElement extends HTMLElement {
 	#getSqrDiv(pos){
 		return this.#shadowRoot.querySelector("[xpos=\""+pos.x+"\"][ypos=\""+pos.y+"\"]")
 	}
-	toIndex(location){
-		location = location.toLowerCase();
+	toIndex(coord){
+		coord = coord.toLowerCase();
 		var xStr = "";
 		var i=0;
-		while (this.#letters.includes(location[i])){
-			xStr+=location[i];
+		while (this.#letters.includes(coord[i])){
+			xStr+=coord[i];
 			i++;
 		}
-		var yStr = location.slice(i);
+		if (xStr === ""){
+			throw "Error no letter component of the coord"
+		}
+		var yStr = coord.slice(i);
 		var x = 0;
 		for (let i = 0; i < xStr.length; i++) {
 			x+=this.#letters.indexOf(xStr[i]) + this.#letters.length*i;
 		}
-		var y = 0;
+		if (yStr === ""){
+			throw "Error no numeric component of the coord"
+		}
 		for (let i = 0; i < yStr.length; i++) {
-			var num = this.#numbers.indexOf(yStr[yStr.length - 1 - i])
-			if (num == -1){
-				return undefined;
+			if (!(yStr[i] in this.#numbers)){
+				throw "Error unknown character in coord"
 			}
-			y+= num - 1 + this.#numbers.length*i;
+		}
+		var y = parseInt(yStr)-1
+		if (y < 0){
+			throw "Error invalid range for coord"
 		}
 		return {x:x,y:y}
 	}
