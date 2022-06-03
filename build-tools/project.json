@@ -14,10 +14,25 @@
 			]
 		}
 	},
-	"instructions":[
-		{
-			"type":"BUILD",
-			"from":"src/FlipCard/build.json"
-		}
-	]
+	"commands":{
+		"buildAll": [
+			{
+				"type":"BUILD",
+				"from":"src/FlipCard/build.json",
+				"out":"build"
+			},
+			{
+				"type":"BUILD",
+				"from":"src/ChessBoard/build.json",
+				"out":"build"
+			}
+		],
+		"buildChess": [
+			{
+				"type":"BUILD",
+				"from":"src/ChessBoard/build.json",
+				"out":"build"
+			}
+		]
+	}
 }

@@ -1,0 +1,70 @@
+:host{
+	
+	--sqr-light: rgb(200,200,200);
+	--sqr-dark: rgb(25,25,25);
+	/* chess.com */
+	--sqr-light: rgb(238,238,210);
+	--sqr-dark: rgb(118,150,86);
+	/* chess.com blue */
+	/* --sqr-light: rgb(234,233,210);
+	--sqr-dark: rgb(75,115,153); */
+}
+
+.main{
+	display: grid;
+	grid-template-columns: repeat(var(--width), 1fr);
+	width: 100%;
+}
+.main,.main *{
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
+}
+.board-sqr.dark{
+	background-color: var(--sqr-dark);
+}
+.board-sqr.light{
+	background-color: var(--sqr-light);
+}
+.board-sqr{
+	width: 100%;
+	aspect-ratio: 1/1;
+	overflow: hidden;
+	position: relative;
+}
+.board-sqr>svg{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+}
+.board-sqr:where(.yellow,.red,.circle,.encircle,.border)::after,
+.board-sqr:where(.yellow,.red,.circle,.encircle,.border)::before{
+	content:'';
+	inset: 0;
+	position: absolute;
+}
+.board-sqr.yellow::before{
+	background-color: rgba(255,255,0,0.5);
+}
+.board-sqr.red::before{
+	background-color: rgba(255,0,0,0.5);
+}
+.board-sqr.circle::after{
+	margin: 25%;
+	background-color: rgba(0,0,0,0.2);
+	border-radius: 50%;
+}
+.board-sqr.encircle::after{
+	font-size: 20%; /* this is 1em cause shadows dont allow % */
+	box-shadow: inset 0 0 0 1em rgba(0, 0, 0, 0.2); /* this is the border with a width of 1em */
+	border-radius: 50%;
+}
+
+.board-sqr.border::after{
+	font-size: 10%; /* this is 1em cause shadows dont allow % */
+	box-shadow: inset 0 0 0 1em rgba(0, 0, 0, 0.2); /* this is the border with a width of 1em */
+}

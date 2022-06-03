@@ -1,0 +1,121 @@
+{
+	"/enviroment":{
+		"dir":{
+			"type":"VAR",
+			"from":"THISDIR"
+		}
+	},
+	"commands": {
+		"build": [
+			{
+				"type":"OUTPUT",
+				"from":
+				{
+					"type": "TEXT",
+					"from": "Minifying ChessBoard"
+				}
+			},
+			{
+				"type":"HTMLMIN",
+				"out":"min/ChessBoard.min.html",
+				"from":"src/ChessBoard.html"
+			},
+			{
+				"type":"CSSMIN",
+				"out":"min/ChessBoard.min.css",
+				"from":"src/ChessBoard.css"
+			},
+			{
+				"type":"JSMIN",
+				"out":"min/ChessBoard.min.js",
+				"from":"src/ChessBoard.js"
+			},
+			{
+				"type":"OUTPUT",
+				"from":
+				{
+					"type": "TEXT",
+					"from": "Generating ChessBoard File"
+				}
+			},
+			{
+				"type": "GENERATE",
+				"out": "ChessBoard.min.js",
+				"from":{
+					"type":"JOIN",
+					"from":[
+						{
+							"type": "TEXT",
+							"from":"const HTMLChessBoardElementTemplate = document.createElement('template');HTMLChessBoardElementTemplate.innerHTML = `"
+						},
+						{
+							"type":"JOIN",
+							"to":"\\`",
+							"from": {
+								"type":"SPLIT",
+								"out": "`",
+								"from": {
+									"type": "FILE",
+									"from": "min/ChessBoard.min.html"
+								}
+							}
+						},
+						{
+							"type": "TEXT",
+							"from": "<style>"
+						},
+						{
+							"type":"JOIN",
+							"to":"\\`",
+							"from": {
+								"type":"SPLIT",
+								"out": "`",
+								"from": {
+									"type": "FILE",
+									"from": "min/ChessBoard.min.css"
+								}
+							}
+						},
+						{
+							"type": "TEXT",
+							"from": "</style>`;"
+						},
+						{
+							"type": "FILE",
+							"from": "min/ChessBoard.min.js"
+						},
+						{
+							"type": "TEXT",
+							"from": "customElements.define('chess-board-', HTMLChessBoardElementElement);"
+						},
+						{
+							"type": "TEXT",
+							"from": "customElements.define('chess-peice-', HTMLChessPeiceElementElement);"
+						}
+					]
+				}
+			},
+			{
+				"type":"OUTPUT",
+				"from":{
+					"type":"TEXT",
+					"from":"Copying Files To Build Dir"
+				}
+			},
+			{
+				"type":"COPYFILE",
+				"from":"ChessBoard.min.js",
+				"out":"../../build/ChessBoard.min.js"
+			}
+		],
+		"debug":[
+			{
+				"type":"OUTPUT",
+				"from":{
+					"type": "TEXT",
+					"from": "Debug Not Yet Implemented"
+				}
+			}
+		]
+	}
+}
