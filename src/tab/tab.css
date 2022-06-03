@@ -1,0 +1,19 @@
+:root{
+	--c1: rgb(95, 15, 64);
+	--c2: rgb(154, 3, 30);
+	--c3: rgb(251, 139, 36);
+	--c4: rgb(227, 100, 20);
+	--c5: rgb(15, 76, 92);
+
+}
+
+body{
+	background-color: var(--c3);
+}
+
+tab-container-{
+	width: 25%;
+}
+tab-container-::part(tab){
+	background-color: red;
+}
