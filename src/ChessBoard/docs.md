@@ -98,3 +98,19 @@ throws an error if the Index is invalid
 
 
 Note although `mouseDown`, `mouseUp` and `mouseClick` are "public" they are not suposed to be called from outside the class and will most likely throw an error if called from outside
+
+
+
+## Events
+
+### chessrefreshed
+this is called after refreshBoard has finished
+
+### chessclick
+this happens on click but provides more information on the square clicked
+
+### chessmouseup
+this happens on mouseup but provides more information on the square clicked
+
+### chessmousedown
+this happens on mousedown but provides more information on the square clicked

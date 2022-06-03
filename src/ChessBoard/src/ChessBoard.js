@@ -44,7 +44,8 @@ class HTMLChessBoardElementElement extends HTMLElement {
 		}
 
 		this.#constructBoard()
-		
+
+		this.dispatchEvent(new CustomEvent('chessrefreshed',{}));
 	}
 	#getPieces(){
 		this.#pieces = [];
@@ -170,7 +171,7 @@ class HTMLChessBoardElementElement extends HTMLElement {
 		}
 		// this.#mouseDownOn = e.originalTarget;
 		// this.#isMouseDown = true;
-		const event = new CustomEvent('chessmouseup', {
+		const event = new CustomEvent('chessmousedown', {
 			bubbles:true,
 			detail:{
 				pos:this.toCoord({
