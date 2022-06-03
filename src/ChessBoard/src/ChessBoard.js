@@ -23,8 +23,8 @@ class HTMLChessBoardElementElement extends HTMLElement {
 		this.#shadowRoot.getElementById("main").style.setProperty("--width", this.size);
 
 		if (this.getAttribute("disabled")){
-			this.disabled = this.getAttribute("disabled").split(" ").filter(el=>el=="").map(el=>{
-				returnv = this.toIndex(el);
+			this.disabled = this.getAttribute("disabled").split(" ").filter(el=>el!=="").map(el=>{
+				var returnv = this.toIndex(el);
 				if (returnv === undefined){
 					throw `Error ${el} is not a valid `
 				}
@@ -43,7 +43,7 @@ class HTMLChessBoardElementElement extends HTMLElement {
 			return found;
 		}
 
-		this.constructBoard()
+		this.#constructBoard()
 		
 	}
 	#getPieces(){
@@ -213,7 +213,7 @@ class HTMLChessBoardElementElement extends HTMLElement {
 		});
 		this.dispatchEvent(event);
 	}
-	constructBoard() {
+	#constructBoard() {
 		var main = this.#shadowRoot.getElementById("main");
 		var isDark = false;
 		for (let i = this.size-1; i >= 0; i--) {
