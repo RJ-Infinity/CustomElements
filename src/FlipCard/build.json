@@ -5,86 +5,97 @@
 			"from":"THISDIR"
 		}
 	},
-	"instructions": [
-		{
-			"type":"OUTPUT",
-			"from":
+	"commands": {
+		"build": [
 			{
-				"type": "TEXT",
-				"from": "Minifying FlipCard"
-			}
-		},
-		{
-			"type":"HTMLMIN",
-			"out":"min/FlipCard.min.html",
-			"from":"src/FlipCard.html"
-		},
-		{
-			"type":"CSSMIN",
-			"out":"min/FlipCard.min.css",
-			"from":"src/FlipCard.css"
-		},
-		{
-			"type":"JSMIN",
-			"out":"min/FlipCard.min.js",
-			"from":"src/FlipCard.js"
-		},
-		{
-			"type":"OUTPUT",
-			"from":
+				"type":"OUTPUT",
+				"from":
+				{
+					"type": "TEXT",
+					"from": "Minifying FlipCard"
+				}
+			},
 			{
-				"type": "TEXT",
-				"from": "Generating FlipCard File"
+				"type":"HTMLMIN",
+				"out":"min/FlipCard.min.html",
+				"from":"src/FlipCard.html"
+			},
+			{
+				"type":"CSSMIN",
+				"out":"min/FlipCard.min.css",
+				"from":"src/FlipCard.css"
+			},
+			{
+				"type":"JSMIN",
+				"out":"min/FlipCard.min.js",
+				"from":"src/FlipCard.js"
+			},
+			{
+				"type":"OUTPUT",
+				"from":
+				{
+					"type": "TEXT",
+					"from": "Generating FlipCard File"
+				}
+			},
+			{
+				"type": "GENERATE",
+				"out": "FlipCard.min.js",
+				"from":{
+					"type":"JOIN",
+					"from":[
+						{
+							"type": "TEXT",
+							"from":"const HTMLFlipCardElementTemplate = document.createElement('template');HTMLFlipCardElementTemplate.innerHTML = `"
+						},
+						{
+							"type": "FILE",
+							"from": "min/FlipCard.min.html"
+						},
+						{
+							"type": "TEXT",
+							"from": "<style>"
+						},
+						{
+							"type": "FILE",
+							"from": "min/FLIPCARD.min.css"
+						},
+						{
+							"type": "TEXT",
+							"from": "</style>`;"
+						},
+						{
+							"type": "FILE",
+							"from": "min/FLIPCARD.min.js"
+						},
+						{
+							"type": "TEXT",
+							"from": "customElements.define('flip-card-', HTMLFlipCardElementElement);"
+						}
+					]
+				}
+			},
+			{
+				"type":"OUTPUT",
+				"from":{
+					"type":"TEXT",
+					"from":"Copying Files To Build Dir"
+				}
+			},
+			{
+				"type":"COPYFILE",
+				"from":"FlipCard.min.js",
+				"out":"../../build/FlipCard.min.js"
 			}
-		},
-		{
-			"type": "GENERATE",
-			"out": "FlipCard.min.js",
-			"from":{
-				"type":"JOIN",
-				"from":[
-					{
-						"type": "TEXT",
-						"from":"const HTMLFlipCardElementTemplate = document.createElement('template');HTMLFlipCardElementTemplate.innerHTML = `"
-					},
-					{
-						"type": "FILE",
-						"from": "min/FlipCard.min.html"
-					},
-					{
-						"type": "TEXT",
-						"from": "<style>"
-					},
-					{
-						"type": "FILE",
-						"from": "min/FLIPCARD.min.css"
-					},
-					{
-						"type": "TEXT",
-						"from": "</style>`;"
-					},
-					{
-						"type": "FILE",
-						"from": "min/FLIPCARD.min.js"
-					},
-					{
-						"type": "TEXT",
-						"from": "customElements.define('flip-card-', HTMLFlipCardElementElement);"
-					}
-				]
+		],
+		"debug":[
+			{
+				"type":"OUTPUT",
+				"from":{
+					"type": "TEXT",
+					"from": "Debug Not Yet Implemented"
+				}
 			}
-		},
-		{
-			"type":"OUTPUT",
-			"from":{
-				"type":"TEXT",
-				"from":"Copying Files To Build Dir"
-			}
-		},
-		{
-			"type":"COPYFILE",
-			"from":"FlipCard.min.js",
-			"out":"../../build/FlipCard.min.js"
-		}
-	]
+		]
+	}
 }
