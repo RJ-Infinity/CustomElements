@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Test</title>
+		<script src="script.js" defer></script>
+	</head>
+	<body>
+		<div class="vid-container" id="vidContainer">
+			<video id="vidPlayer"></video>
+			<slot id="vidSources">
+				<!-- <source src="./res/vid/360pa.mp4" content="video audio"> -->
+
+				<source src="./res/vid/480p.mp4" content="video">
+				<source src="./res/vid/360p.mp4" content="video">
+				<source src="./res/vid/360pa.mp4" content="video audio">
+				<source src="./res/vid/240p.mp4" content="video">
+				<source src="./res/vid/144p.mp4" content="video">
+				<source src="./res/vid/2a.m4a" content="audio">
+				<source src="./res/vid/3a.m4a" content="audio">
+				<source src="./res/vid/autoCaptions.vtt" content="captions">
+				<source src="./res/vid/Captions.vtt" content="captions">
+			</slot>
+		</div>
+	</body>
+</html>

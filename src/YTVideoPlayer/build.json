@@ -1,0 +1,42 @@
+{
+	"commands":{
+		"debug": [
+			{
+				"type":"GENERATE",
+				"from":{
+					"type":"JOIN",
+					"from":[
+						{
+							"type": "TEXT",
+							"from":"const HTMLYTVideoPlayerElementTemplate = document.createElement('template');HTMLYTVideoPlayerElementTemplate.innerHTML = `"
+						},
+						{
+							"type": "FILE",
+							"from": "src/FlipCard.html"
+						},
+						{
+							"type": "TEXT",
+							"from": "<style>"
+						},
+						{
+							"type": "FILE",
+							"from": "src/FLIPCARD.css"
+						},
+						{
+							"type": "TEXT",
+							"from": "</style>`;"
+						},
+						{
+							"type": "FILE",
+							"from": "src/FLIPCARD.js"
+						},
+						{
+							"type": "TEXT",
+							"from": "customElements.define('yt-video-player-', HTMLYTVideoPlayerElement);"
+						}
+					]
+				}
+			}
+		]
+	}
+}
