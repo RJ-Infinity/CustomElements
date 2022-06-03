@@ -34,8 +34,8 @@ DataStack=[]
 def parseTextOrStr(obj,var,Module):
 	if type(obj) == dict:
 		obj = parseObj(obj)
-		assert type(obj) == str, f"An Object in the {var} {Module} module list must be a TextModule"
-	assert type(obj) == str, f"{Module} Module {var} must be a string or TextModule"
+		assert type(obj) == str, f"An Object in the {var} {Module} module list must be a TextModule whereas {obj} isnt"
+	assert type(obj) == str, f"{Module} Module {var} must be a string or TextModule whereas {obj} isnt"
 	return obj
 
 Vars:dict[str,Callable] = {
@@ -48,7 +48,7 @@ def parseVar(From,_):
 	assert From in Vars, f"VAR {From} not found"
 	return Vars[From]()
 def parseText(From,_):
-	assert type(From) == str, "TEXT Module from must be a String"
+	assert type(From) == str, f"TEXT Module from must be a String whereas {From} isnt"
 	return From
 def parseJoin(From,Out):
 	Out = "" if Out == None else Out
@@ -58,10 +58,10 @@ def parseJoin(From,Out):
 	assert type(From) == list, f"JOIN Module from must be a list or ListModule whereas {From} isnt"
 	returnv = ""
 	for item in From:
-		assert type(item) == dict, "The Elements in the JOIN module list must be Objects"
+		assert type(item) == dict, f"The Elements in the JOIN module list must be Objects whereas {item} isnt"
 		parsed = parseObj(item)
-		assert type(parsed) == str, "The Elements in the JOIN module list must be TextModules"
-		returnv += parsed
+		assert type(parsed) == str, f"The Elements in the JOIN module list must be TextModules whereas {item} isnt"
+		returnv += parsed + Out
 	returnv = returnv[:len(returnv)-len(Out)]
 	return returnv
 def parseFile(From,_):
@@ -151,9 +151,9 @@ doModules = {
 }
 
 def parseObj(obj):
-	assert type(obj) == dict, "Error can only parse an Object (try converting the value to a TEXT object)"
-	assert "type" in obj, "Error 'type' must be present in a parsable object"
-	assert "from" in obj, "Error 'from' must be present in a parsable object"
+	assert type(obj) == dict, f"Error can only parse an Object (try converting the value to a TEXT object)\nError occurred in the obj {obj}"
+	assert "type" in obj, f"Error 'type' must be present in a parsable object\nError occurred in the obj {obj}"
+	assert "from" in obj, f"Error 'from' must be present in a parsable object\nError occurred in the obj {obj}"
 	if obj["type"] in TextModules:
 		return TextModules[obj["type"]](obj["from"],obj["out"] if "out" in obj else None)
 	if obj["type"] in doModules:
@@ -163,7 +163,7 @@ def parseObj(obj):
 			obj["out"] if "out" in obj else None
 		)
 	else:
-		assert False, f"Error the Module {obj['type']} cannot be found"
+		assert False, f"Error the Module {obj['type']} cannot be found\nError occurred in the obj {obj}"
 
 
 def EnvDir(value):
@@ -194,8 +194,10 @@ def setUpEnv(build:JsonDict):
 			envModules[key](env[key])
 
 def runInstructions(build:JsonDict,Command:str):
-def runInstructions(build:JsonDict):
-	if (not "instructions" in build) or build["instructions"]==[]:
+	assert ("commands" in build), f"Error no commands Object in {build}"
+	assert (type(build["commands"]) == dict), f"Error commands must be an Object whereas {build['commands']} isnt"
+	assert (Command in build["commands"]), f"Error No {Command} command"
+	if build["commands"][Command]==[]:
 		print("Warning: Nothing for the build to do")# not an error just stupid
 		return
 	ins = build["commands"][Command]
@@ -221,7 +223,7 @@ def main(args:list[str],ignoreFlags = False):
 	except json.decoder.JSONDecodeError:
 		assert False, f"Error File {args[1]} isnt a valid json format"
 	os.chdir(args[1]+"\\..")
-	assert type(build) == dict, "The root Element must be an Object"
+	assert type(build) == dict, f"The root Element must be an Object in {build}"
 
 	DataStack.append({"FileLoc":args[1],"Command":args[2],"Args":" ".join(args[3:])})
 
